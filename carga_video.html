@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <title>Carga y reproducción de video</title>  
+
+        
+        <script>
+    
+            function seleccionar(){                                       //seleccionamos el archivo
+                
+                var zonaVisualizar = document.getElementById("video");   //identificar zona dónde veremos el video
+                
+                let videoFile = document.getElementById("videoFile");    //identificar el botón de seleccionar videos
+               
+                videoFile.addEventListener("change",procesar,false);     //poner a la escucha el botón video file
+            }                                                            //cuando cambia(al pulsarlo) llama a la función procesar
+
+            
+            function procesar(e){                                       //una vez seleccionado el archivo
+                                                                        //lo cargamos para poder visualizarlo 
+               
+                let videoFile = e.target.files;                        //la propiedad files almacena
+                                                                       //los archivos seleccionados en un array
+                              
+                var mi_videoFile = videoFile[0];                       //solo voy a descargar un video
+                                                                       //crear una variable para almacenarlo 
+                                                                       //está en la posición 0 del array
+
+                var lector = new FileReader();                         //crear el lector que va a leer esta información
+                              
+                lector.readAsDataURL(mi_videoFile);                    //especificar formato en que se leerá el archivo
+                               
+                lector.addEventListener("load",mostrar,false);         //poner el lector a la escucha para que 
+            }                                                          //cuando cargue ,muestre contenido en la web
+
+        
+            function mostrar(e){                                      //una vez cargado el archivo
+                                                                      //llamamos a la función mostrar
+                                                                  
+                let resultado = e.target.result;                      //variable que almacena lo que ha leido el lector
+               
+                alert("Cargando video")
+                
+                zonaVisualizar.innerHTML += '<video id= "videoResultado" src = "' + resultado + '" standby="Descarga en proceso" >';  //escribimos resultado en zona visualizar
+            }
+                      
+            window.addEventListener("load", seleccionar, false);       //evento de ventana ,a la escucha 
+                                                                       //cuando abrimos el archivo comienza con la función seleccionar
+        </script>   
+        
+        
+    </head>
+
+
+    <body>
+
+        <h3>Selecionar y reproducir video</h3>
+       
+        <div id="zonaSeleccionar">
+           
+                <label for="videoFile">Selecciona un archivo de video</label>
+                <input type="file" name="files[]" id="videoFile" multiple onchange="seleccionar()" accept="video/*">
+           
+        </div>
+
+        <div id="zonaVisualizar">
+           
+        </div>    
+
+        <div>
+                <button onclick="document.getElementById('videoResultado').play();">Reproducir</button>
+                <button onclick="document.getElementById('videoResultado').pause();">Pausa</button>
+                <button onclick="document.getElementById('videoResultado').volume-=0.1;">Bajar Volumen</button>
+                <button onclick="document.getElementById('videoResultado').volume+=0.1;">Subir Volumen</button>
+               
+        </div>
+
+    </body>
+</html>
+
